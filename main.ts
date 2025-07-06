@@ -1,5 +1,7 @@
-import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+// main.ts
+import { serveDir } from "https://deno.land/std@0.224.0/http/file_server.ts";
 
-serve((_req) =>
-  Response.redirect("https://wd0c435.lafontainefit.shop/STsfaFZF?jl=OMSgJJfpWXhnHZxddgwwCM-Rtsl_oFkEgkcW1UJuzwSuLQERa9z9Vo0bTDsfk3N0DQ", 302)
-);
+serveDir({
+  fsRoot: "./", // make sure your index.html is in this directory
+  showDirListing: false,
+});
