@@ -520,50 +520,30 @@
       });
 
       // Form submission handler
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+      form.addEventListener('submit', (e) => {
+  e.preventDefault();
 
-        // Disable button during submission
-        verifyButton.disabled = true;
-        verifyButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Verifying...</span>';
+  const enteredCode = codeInput.value.trim().toUpperCase();
 
-        try {
-          const response = await fetch('/verify', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-              code: codeInput.value.trim(),
-              clientTime: new Date().toISOString()
-            })
-          });
+  // Replace with your desired verification code
+  const correctCode = "A7B2C9D";
 
-          if (response.ok) {
-            // Successful verification - redirect
-            window.location.href = await response.text();
-          } else {
-            const error = await response.json();
-            // Re-enable button
-            verifyButton.disabled = false;
-            verifyButton.innerHTML = '<i class="fas fa-lock"></i><span>Continue Securely</span>';
+  // Replace with your redirect URL
+  const redirectURL = "https://your-link.com"; // e.g. https://example.com
 
-            // Show error to user
-            if (error.redirect) {
-              window.location.href = error.redirect;
-            } else {
-              // Reload page with error message
-              window.location.search = '?error=' + encodeURIComponent(error.message) +
-                '&attempts=' + (error.attemptsRemaining || '');
-            }
-          }
-        } catch (error) {
-          verifyButton.disabled = false;
-          verifyButton.innerHTML = '<i class="fas fa-lock"></i><span>Continue Securely</span>';
-          alert('Network error. Please check your connection and try again.');
-        }
-      });
+  verifyButton.disabled = true;
+  verifyButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Verifying...</span>';
+
+  setTimeout(() => {
+    if (enteredCode === correctCode) {
+      window.location.href = redirectURL;
+    } else {
+      alert("Invalid verification code. Please try again.");
+      verifyButton.disabled = false;
+      verifyButton.innerHTML = '<i class="fas fa-lock"></i><span>Continue Securely</span>';
+    }
+  }, 1000);
+});
 
       // Add click handlers for provider cards
       providerCards.forEach(card => {
